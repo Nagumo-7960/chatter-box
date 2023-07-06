@@ -26,30 +26,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen("Android")
+                    HomeScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun HomeScreen(name: String) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "入室する")
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CatterBoxTheme {
-        HomeScreen("Android")
-    }
-}

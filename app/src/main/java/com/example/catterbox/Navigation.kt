@@ -9,7 +9,12 @@ import androidx.navigation.compose.composable
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            HomeScreen()
+            HomeScreen(
+                toChatRoom = { navController.navigate("room")}
+            )
+        }
+        composable("room") {
+            ChatRoomScreen()
         }
     }
 

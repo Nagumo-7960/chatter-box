@@ -1,6 +1,7 @@
 package com.example.catterbox
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -9,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -20,9 +22,11 @@ import androidx.compose.ui.unit.dp
 fun ChatRoomScreen() {
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
     Column(
         modifier = Modifier
-            .fillMaxSize() ,
+            .fillMaxSize()
+            .clickable { focusRequester.requestFocus() },
         verticalArrangement = Arrangement.Bottom
     ) {
         Column(modifier = Modifier
@@ -34,6 +38,8 @@ fun ChatRoomScreen() {
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
+                    text = ""
+
                 }),
                 modifier = Modifier
                     .fillMaxWidth()

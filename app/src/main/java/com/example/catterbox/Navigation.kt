@@ -10,11 +10,13 @@ fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
             HomeScreen(
-                toChatRoom = { navController.navigate("room")}
+                toChatRoom = { navController.navigate("room") }
             )
         }
         composable("room") {
-            ChatRoomScreen()
+            ChatRoomScreen(
+                toHome = { navController.navigate("home") }
+            )
         }
     }
 

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/java/com/example/catterbox/ChatRoomScreen.kt" value="0.335" />
         <entry key="app/src/main/java/com/example/catterbox/HomeScreen.kt" value="0.2687763713080169" />
         <entry key="app/src/main/java/com/example/catterbox/MainActivity.kt" value="0.33" />
       </map>

@@ -12,5 +12,6 @@
 [**自分のアイコンを写真フォルダから選べる機能**]が備わっています。
 
 <img width="300" alt="SCR-20230502-nedr" src="https://github.com/Nagumo-7960/chatter-box/assets/69156255/86a33ec2-d1b9-4746-b13f-556e0e94c672">
-<img width="300" alt="SCR-20230502-nedr" src="https://github.com/Nagumo-7960/chatter-box/assets/69156255/98fe393d-fc79-4c59-8691-d32f978b94ba">
+<img width="300" alt="SCR-20230502-nedr" src="https://github.com/Nagumo-7960/chatter-box/assets/69156255/1c9cddd0-f8ac-4463-90e6-91c6272f33aa">
 
+![catter-box0709]()

@@ -1,5 +1,6 @@
 package com.example.catterbox
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.LightGray
@@ -19,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.catterbox.ui.theme.CatterBoxTheme
 
+var myTextMessage = mutableListOf<String>("-- 佐藤和弘さんが入室しました --","こんにちは", "-- 坂本庄司さんが入室しました --")
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit) {
@@ -28,18 +32,33 @@ fun ChatRoomScreen(toHome: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column (
-            modifier = Modifier.padding(16.dp)
-                ){
-            Button(onClick = { toHome()}) {
-                Text(text = "退室")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Column {
+                Button(onClick = { toHome()}) {
+                    Text(text = "退室")
+                }
+            }
+            
+            Spacer(modifier = Modifier.padding(8.dp))
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                myTextMessage.forEach(){
+                    Column() {
+                        Text(text = it)
+                        Spacer(modifier = Modifier.padding(4.dp))
+                    }
+                }
             }
         }
+
         Column(
             modifier = Modifier
                 .padding(32.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom
+                .align(Alignment.BottomStart),
         ) {
             BasicTextField(
                 value = text,
@@ -47,6 +66,7 @@ fun ChatRoomScreen(toHome: () -> Unit) {
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
+                    myTextMessage.add(text)
                     text = ""
 
                 }),

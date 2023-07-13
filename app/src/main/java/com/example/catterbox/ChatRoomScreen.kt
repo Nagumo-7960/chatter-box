@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -47,9 +48,18 @@ fun ChatRoomScreen(toHome: () -> Unit) {
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 myTextMessage.forEach(){
-                    Column() {
-                        Text(text = it)
-                        Spacer(modifier = Modifier.padding(4.dp))
+                    //　TODO 見た目上のレイアウトとして入室時を文字列検索のif文にしているが、データベース設計に合わせて変更する
+                    if(it.startsWith("--") && it.endsWith("--")){
+                        Column() {
+                            Text(text = it)
+                            Spacer(modifier = Modifier.padding(8.dp))
+                        }
+                    }else{
+                        Column() {
+                            Text(text = it,modifier = Modifier.background(color = Color(0xFF96F3FF),shape = RoundedCornerShape(50))
+                                .padding(8.dp))
+                            Spacer(modifier = Modifier.padding(8.dp))
+                        }
                     }
                 }
             }

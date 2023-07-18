@@ -2,12 +2,11 @@ package com.example.catterbox
 
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.example.catterbox.database.ChatDatabase
 
-@HiltAndroidApp
-class ChatApplication : Application(){
-    override fun onCreate() {
-        super.onCreate()
+class ChatApplication : Application() {
 
+    companion object {
+        lateinit var chatDatabase: ChatDatabase
     }
 }

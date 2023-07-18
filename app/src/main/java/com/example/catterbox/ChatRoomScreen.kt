@@ -1,5 +1,6 @@
 package com.example.catterbox
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,9 +20,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.example.catterbox.ChatApplication.Companion.dao
 import com.example.catterbox.database.dao.MessageDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 var myTextMessage =
     mutableListOf<String>("-- 佐藤和弘さんが入室しました --", "こんにちは", "-- 坂本庄司さんが入室しました --")
@@ -88,6 +92,16 @@ fun ChatRoomScreen(toHome: () -> Unit) {
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
                     myTextMessage.add(text)
+                    GlobalScope.launch{
+                        val messageSample = MessageEntity(
+                            id = 0,
+                            post_user_id = 2,
+                            message_content = text,
+                            room_id = 0
+                        )
+                        dao.create(messageSample)
+                    }
+                    Log.d("print_text",text)
                     text = ""
 
                 }),

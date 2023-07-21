@@ -21,19 +21,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.catterbox.ChatApplication.Companion.dao
-import com.example.catterbox.database.dao.MessageDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-var myTextMessage =
-    mutableListOf<String>("-- 佐藤和弘さんが入室しました --", "こんにちは", "-- 坂本庄司さんが入室しました --")
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ChatRoomScreen(toHome: () -> Unit) {
-    val dummyMessages = getDummyMessages()
+fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
+    val allMessages by chatViewModel.allMessages.collectAsState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
@@ -55,26 +52,18 @@ fun ChatRoomScreen(toHome: () -> Unit) {
             Spacer(modifier = Modifier.padding(8.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
-                dummyMessages.forEach {
-                    //　TODO 見た目上のレイアウトとして入室時を文字列検索のif文にしているが、データベース設計に合わせて変更する
-                    if (it.message_content.startsWith("--") && it.message_content.endsWith("--")) {
-                        Column {
-                            Text(text = it.message_content)
-                            Spacer(modifier = Modifier.padding(8.dp))
-                        }
-                    } else {
-                        Column {
-                            Text(
-                                text = it.message_content,
-                                modifier = Modifier
-                                    .background(
-                                        color = Color(0xFF96F3FF),
-                                        shape = RoundedCornerShape(50)
-                                    )
-                                    .padding(8.dp)
-                            )
-                            Spacer(modifier = Modifier.padding(8.dp))
-                        }
+                allMessages.forEach {
+                    Column {
+                        Text(
+                            text = it.message_content,
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFF96F3FF),
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .padding(8.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(8.dp))
                     }
                 }
             }
@@ -91,8 +80,7 @@ fun ChatRoomScreen(toHome: () -> Unit) {
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
-                    myTextMessage.add(text)
-                    GlobalScope.launch{
+                    GlobalScope.launch {
                         val messageSample = MessageEntity(
                             id = 0,
                             post_user_id = 2,
@@ -101,7 +89,7 @@ fun ChatRoomScreen(toHome: () -> Unit) {
                         )
                         dao.create(messageSample)
                     }
-                    Log.d("print_text",text)
+                    Log.d("print_text", text)
                     text = ""
 
                 }),
@@ -116,29 +104,14 @@ fun ChatRoomScreen(toHome: () -> Unit) {
     }
 }
 
-fun getDummyMessages(): List<MessageEntity> {
-    val dummyMessages = mutableListOf<MessageEntity>()
-
-    for (i in 1..5) {
-        val message = MessageEntity(
-            id = i,
-            post_user_id = i,
-            message_content = "This message content is ${i}",
-            room_id = 0
-        )
-        dummyMessages.add(message)
-    }
-
-    return dummyMessages
-}
-
 @Preview
 @Composable
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
     CatterBoxTheme {
-        ChatRoomScreen {
-            navController.navigate("home")
-        }
+        ChatRoomScreen(
+            toHome = { navController.navigate("home") },
+            chatViewModel = ChatRoomViewModel()
+        )
     }
 }

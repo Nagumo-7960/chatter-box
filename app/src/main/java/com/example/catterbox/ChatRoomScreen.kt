@@ -2,6 +2,7 @@ package com.example.catterbox
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -25,7 +26,6 @@ import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -53,7 +53,12 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 allMessages.forEach {
-                    Column {
+                    Column (modifier = Modifier.clickable {
+                        //クリックでデータベースから削除
+                        GlobalScope.launch {
+                            dao.delete(messageEntity = it)
+                        }
+                    }){
                         Text(
                             text = it.message_content,
                             modifier = Modifier
@@ -108,6 +113,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 @Composable
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
+
     CatterBoxTheme {
         ChatRoomScreen(
             toHome = { navController.navigate("home") },

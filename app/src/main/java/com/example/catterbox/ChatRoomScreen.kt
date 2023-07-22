@@ -68,8 +68,8 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                                 )
                                 .padding(8.dp)
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
                     }
+                    Spacer(modifier = Modifier.padding(8.dp))
                 }
             }
         }

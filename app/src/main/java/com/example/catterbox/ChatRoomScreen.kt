@@ -52,7 +52,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
             Spacer(modifier = Modifier.padding(8.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
-                allMessages.forEach {
+                allMessages.asReversed().forEach {
                     Column (modifier = Modifier.clickable {
                         //クリックでデータベースから削除
                         GlobalScope.launch {

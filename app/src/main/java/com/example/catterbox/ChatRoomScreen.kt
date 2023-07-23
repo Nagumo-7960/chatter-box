@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.catterbox.ChatApplication.Companion.dao
+import com.example.catterbox.database.dao.MessageDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
@@ -31,7 +33,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     val allMessages by chatViewModel.allMessages.collectAsState()
-
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
     Box(
@@ -44,32 +45,58 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 .padding(16.dp)
         ) {
             Column {
-                Button(onClick = { toHome() }) {
-                    Text(text = "退室")
+                Row() {
+                    Button(onClick = { toHome() }) {
+                        Text(text = "退室")
+                    }
+
+                    Spacer(modifier = Modifier.padding(8.dp))
+
+                    Button(onClick = {
+                        GlobalScope.launch {
+                            dao.deleteAll()
+                        }
+                    }) {
+                        Text(text = "メッセージ全削除")
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            Column(modifier = Modifier.fillMaxWidth()) {
-                allMessages.asReversed().forEach {
-                    Column (modifier = Modifier.clickable {
-                        //クリックでデータベースから削除
-                        GlobalScope.launch {
-                            dao.delete(messageEntity = it)
-                        }
-                    }){
-                        Text(
-                            text = it.message_content,
-                            modifier = Modifier
-                                .background(
-                                    color = Color(0xFF96F3FF),
-                                    shape = RoundedCornerShape(50)
+            LazyColumn(modifier = Modifier.fillMaxWidth().padding(bottom = 56.dp)) {
+                item{
+                    allMessages.asReversed().forEach {
+                        Column (modifier = Modifier.clickable {
+                            //クリックでデータベースから削除
+                            GlobalScope.launch {
+                                dao.delete(messageEntity = it)
+                            }
+                        }){
+                            if(it.post_user_id==2){
+                                Text(
+                                    text = it.message_content,
+                                    modifier = Modifier
+                                        .background(
+                                            color = Color(0xFF9BFF9F),
+                                            shape = RoundedCornerShape(50)
+                                        )
+                                        .padding(8.dp)
                                 )
-                                .padding(8.dp)
-                        )
+                            }else{
+                                Text(
+                                    text = it.message_content,
+                                    modifier = Modifier
+                                        .background(
+                                            color = Color(0xFF96F3FF),
+                                            shape = RoundedCornerShape(50)
+                                        )
+                                        .padding(8.dp)
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.padding(8.dp))
                     }
-                    Spacer(modifier = Modifier.padding(8.dp))
                 }
             }
         }
@@ -113,7 +140,6 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 @Composable
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
-
     CatterBoxTheme {
         ChatRoomScreen(
             toHome = { navController.navigate("home") },

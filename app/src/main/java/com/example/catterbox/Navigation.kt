@@ -15,7 +15,8 @@ fun Navigation(navController: NavHostController) {
         }
         composable("room") {
             ChatRoomScreen(
-                toHome = { navController.navigate("home") }
+                toHome = { navController.navigate("home") },
+                chatViewModel = ChatRoomViewModel()
             )
         }
     }

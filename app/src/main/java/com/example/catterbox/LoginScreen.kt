@@ -1,6 +1,5 @@
 package com.example.catterbox
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -32,17 +30,20 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.catterbox.database.model.MessageEntity
+import androidx.navigation.compose.rememberNavController
+import com.example.catterbox.database.model.UserEntity
+import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(){
+fun LoginScreen(toHome: () -> Unit) {
     var userName by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
-    Box() {
+    Box {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,12 +69,18 @@ fun LoginScreen(){
 
             Button(
                 onClick = {
-//                    if (userName.isNotBlank() && icon.isNotBlank()) {
-//                        saveUserData(userName, icon)
-//                        navController.navigate(Screens.Chat.route)
-//                    } else {
-//                        Toast.makeText(LocalContext.current, "名前とアイコンを入力してください", Toast.LENGTH_SHORT).show()
-//                    }
+                    if (userName.isNotBlank()) {
+                        GlobalScope.launch {
+                            val user = UserEntity(
+                                id = 0,
+                                name = userName
+                            )
+                            ChatApplication.userDao.create(user)
+                        }
+                        toHome()
+                    } else {
+                        Toast.makeText(context, "名前を入力してください", Toast.LENGTH_LONG).show()
+                    }
                 }
             ) {
                 Text("ログイン")
@@ -84,6 +91,11 @@ fun LoginScreen(){
 
 @Preview
 @Composable
-fun PreviewLoginScreen(){
-    LoginScreen()
+fun PreviewLoginScreen() {
+    val navController = rememberNavController()
+    CatterBoxTheme {
+        LoginScreen(
+            toHome = { navController.navigate("home") },
+        )
+    }
 }

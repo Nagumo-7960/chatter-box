@@ -5,12 +5,14 @@ import android.app.Application
 import androidx.room.Room
 import com.example.catterbox.database.ChatDatabase
 import com.example.catterbox.database.dao.MessageDAO
+import com.example.catterbox.database.dao.UserDAO
 
 class ChatApplication : Application() {
 
     companion object {
         lateinit var chatDatabase: ChatDatabase
-        lateinit var dao: MessageDAO
+        lateinit var messageDao: MessageDAO
+        lateinit var userDao:UserDAO
     }
 
     override fun onCreate() {
@@ -20,6 +22,7 @@ class ChatApplication : Application() {
             ChatDatabase::class.java,
             "chat-database"
         ).build()
-        dao = chatDatabase.messageDao()
+        messageDao = chatDatabase.messageDao()
+        userDao = chatDatabase.userDao()
     }
 }

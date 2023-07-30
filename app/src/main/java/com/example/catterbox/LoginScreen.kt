@@ -67,26 +67,32 @@ fun LoginScreen(toHome: () -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = {
-                    if (userName.isNotBlank()) {
-                        GlobalScope.launch {
-                            val user = UserEntity(
-                                id = 0,
-                                name = userName
-                            )
-                            ChatApplication.userDao.create(user)
-                        }
-                        toHome()
-                    } else {
-                        Toast.makeText(context, "名前を入力してください", Toast.LENGTH_LONG).show()
+            Button(onClick = {
+                if (userName.isNotBlank()) {
+                    GlobalScope.launch {
+                        val user = UserEntity(
+                            id = 0, name = userName
+                        )
+                        ChatApplication.userDao.create(user)
                     }
+                    toHome()
+                } else {
+                    Toast.makeText(context, "名前を入力してください", Toast.LENGTH_LONG).show()
                 }
-            ) {
+            }) {
                 Text("ログイン")
             }
         }
     }
+}
+
+fun isLoggedIn(): Boolean {
+    val userDao = ChatApplication.userDao
+    val users = userDao.getAll()
+    if (users != null){
+        return true
+    }
+        return false
 }
 
 @Preview

@@ -22,8 +22,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.ChatApplication.Companion.dao
-import com.example.catterbox.database.dao.MessageDAO
+import com.example.catterbox.ChatApplication.Companion.messageDao
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
@@ -54,7 +53,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 
                     Button(onClick = {
                         GlobalScope.launch {
-                            dao.deleteAll()
+                            messageDao.deleteAll()
                         }
                     }) {
                         Text(text = "メッセージ全削除")
@@ -70,7 +69,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                         Column (modifier = Modifier.clickable {
                             //クリックでデータベースから削除
                             GlobalScope.launch {
-                                dao.delete(messageEntity = it)
+                                messageDao.delete(messageEntity = it)
                             }
                         }){
                             if(it.post_user_id==2){
@@ -119,7 +118,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             message_content = text,
                             room_id = 0
                         )
-                        dao.create(messageSample)
+                        messageDao.create(messageSample)
                     }
                     Log.d("print_text", text)
                     text = ""

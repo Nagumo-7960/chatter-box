@@ -7,10 +7,16 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun Navigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = if(isLoggedIn()) "home" else "login") {
+        composable("login") {
+            LoginScreen(
+                toHome = { navController.navigate("home") },
+            )
+        }
         composable("home") {
             HomeScreen(
-                toChatRoom = { navController.navigate("room") }
+                toChatRoom = { navController.navigate("room") },
+                homeViewModel = HomeViewModel()
             )
         }
         composable("room") {

@@ -2,7 +2,7 @@ package com.example.catterbox
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catterbox.ChatApplication.Companion.dao
+import com.example.catterbox.ChatApplication.Companion.messageDao
 import com.example.catterbox.database.dao.MessageDAO
 import com.example.catterbox.database.model.MessageEntity
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ class ChatRoomViewModel: ViewModel() {
     init {
         // Update _allNotes with the latest data from the database
         viewModelScope.launch {
-            dao.getAll().collect { notes ->
+            messageDao.getAll().collect { notes ->
                 _allMessages.value = notes
             }
         }

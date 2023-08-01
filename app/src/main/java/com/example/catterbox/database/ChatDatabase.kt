@@ -14,7 +14,7 @@ import com.example.catterbox.database.model.UserEntity
         UserEntity::class,
         MessageEntity::class,
         ChatRoomEntity::class
-               ],
+    ],
     version = 1,
     exportSchema = false
 )
@@ -22,4 +22,5 @@ abstract class ChatDatabase : RoomDatabase() {
     abstract fun userDao(): UserDAO
     abstract fun messageDao(): MessageDAO
     abstract fun chatRoomDao(): ChatRoomDAO
+
 }

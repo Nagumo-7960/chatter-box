@@ -26,4 +26,8 @@ class HomeViewModel : ViewModel() {
     fun delete(user: UserEntity) = viewModelScope.launch {
         userDAO.delete(user)
     }
+
+    fun isLoggedIn():Boolean{
+        return allUsers.value.isEmpty()
+    }
 }

@@ -86,14 +86,14 @@ fun LoginScreen(toHome: () -> Unit) {
     }
 }
 
-fun isLoggedIn(): Boolean {
-    val userDao = ChatApplication.userDao
-    val users = userDao.getAll()
-    if (users != null){
-        return true
-    }
-        return false
-}
+//fun isLoggedIn(): Boolean {
+//    val userDao = ChatApplication.userDao
+//    val users = userDao.getAll()
+//    if (users != null){
+//        return true
+//    }
+//        return false
+//}
 
 @Preview
 @Composable

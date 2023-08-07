@@ -36,6 +36,7 @@ import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(toHome: () -> Unit) {
@@ -85,15 +86,6 @@ fun LoginScreen(toHome: () -> Unit) {
         }
     }
 }
-
-//fun isLoggedIn(): Boolean {
-//    val userDao = ChatApplication.userDao
-//    val users = userDao.getAll()
-//    if (users != null){
-//        return true
-//    }
-//        return false
-//}
 
 @Preview
 @Composable

@@ -10,10 +10,8 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
-    Log.d("process", "navigation")
     val allUsers by homeViewModel.allUsers.collectAsState()
     NavHost(navController = navController, startDestination = if(allUsers.isNotEmpty()) "home" else "login") {
-        Log.d("allusers_nav", homeViewModel.allUsers.value.toString())
         composable("login") {
             LoginScreen(
                 toHome = { navController.navigate("home") },

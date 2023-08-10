@@ -17,7 +17,6 @@ class HomeViewModel : ViewModel() {
     init {
         // Update _allNotes with the latest data from the database
         viewModelScope.launch {
-            Log.d("process", "homeViewModel-init")
             ChatApplication.userDao.getAll().collect { users ->
                 _allUsers.value = users
             }
@@ -26,11 +25,5 @@ class HomeViewModel : ViewModel() {
 
     fun delete(user: UserEntity) = viewModelScope.launch {
         userDAO.delete(user)
-    }
-
-    fun isLoggedIn():Boolean{
-        Log.d("allusers", allUsers.value.toString())
-        Log.d("process", "isLoggedIn")
-        return allUsers.value.isNotEmpty()
     }
 }

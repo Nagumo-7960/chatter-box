@@ -1,8 +1,8 @@
-package com.example.catterbox
+package com.example.catterbox.screen.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.catterbox.ChatApplication
 import com.example.catterbox.database.dao.UserDAO
 import com.example.catterbox.database.model.UserEntity
 import kotlinx.coroutines.flow.MutableStateFlow

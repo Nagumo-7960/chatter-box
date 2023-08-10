@@ -1,4 +1,4 @@
-package com.example.catterbox
+package com.example.catterbox.screen.home
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -9,12 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.ChatApplication.Companion.userDao
-import com.example.catterbox.database.model.UserEntity
-import com.example.catterbox.ui.theme.CatterBoxTheme
+import com.example.catterbox.ChatApplication
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

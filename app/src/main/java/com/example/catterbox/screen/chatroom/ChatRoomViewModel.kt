@@ -1,7 +1,8 @@
-package com.example.catterbox
+package com.example.catterbox.screen.chatroom
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.catterbox.ChatApplication
 import com.example.catterbox.ChatApplication.Companion.messageDao
 import com.example.catterbox.database.dao.MessageDAO
 import com.example.catterbox.database.model.MessageEntity

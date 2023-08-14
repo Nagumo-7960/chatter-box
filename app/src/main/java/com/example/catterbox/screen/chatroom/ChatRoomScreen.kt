@@ -15,14 +15,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.catterbox.ChatApplication
 import com.example.catterbox.ChatApplication.Companion.messageDao
+import com.example.catterbox.database.ChatDatabase
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
@@ -139,6 +144,11 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 @Composable
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
+    ChatApplication.chatDatabase = Room.databaseBuilder(
+        LocalContext.current,
+        ChatDatabase::class.java,
+        "chat-database"
+    ).build()
     CatterBoxTheme {
         ChatRoomScreen(
             toHome = { navController.navigate("home") },

@@ -15,21 +15,24 @@ import com.example.catterbox.screen.login.LoginScreen
 @Composable
 fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
     val allUsers by homeViewModel.allUsers.collectAsState()
-    NavHost(navController = navController, startDestination = if(allUsers.isNotEmpty()) AppScreen.Home.route else AppScreen.Login.route) {
+    NavHost(
+        navController = navController,
+        startDestination = if(allUsers.isNotEmpty()) AppScreen.Home.route else AppScreen.Login.route
+    ) {
         composable(AppScreen.Login.route) {
             LoginScreen(
-                toHome = { navController.navigate("home") },
+                toHome = { navController.navigate(AppScreen.Home.route) },
             )
         }
         composable(AppScreen.Home.route) {
             HomeScreen(
-                toChatRoom = { navController.navigate("room") },
+                toChatRoom = { navController.navigate(AppScreen.Room.route) },
                 homeViewModel = HomeViewModel()
             )
         }
         composable(AppScreen.Room.route) {
             ChatRoomScreen(
-                toHome = { navController.navigate("home") },
+                toHome = { navController.navigate(AppScreen.Home.route) },
                 chatViewModel = ChatRoomViewModel()
             )
         }

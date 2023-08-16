@@ -1,4 +1,4 @@
-package com.example.catterbox
+package com.example.catterbox.screen.login
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.example.catterbox.ChatApplication
 import com.example.catterbox.database.model.UserEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope

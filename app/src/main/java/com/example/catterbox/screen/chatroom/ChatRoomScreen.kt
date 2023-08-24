@@ -27,8 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
 import com.example.catterbox.ChatApplication.Companion.messageDao
+import com.example.catterbox.data.MessageData
 import com.example.catterbox.database.ChatDatabase
 import com.example.catterbox.database.model.MessageEntity
+import com.example.catterbox.firestore.FireStoreHelper
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     val allMessages by chatViewModel.allMessages.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
+    val fireStoreHelper = FireStoreHelper()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -124,6 +127,13 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             room_id = 0
                         )
                         messageDao.create(messageSample)
+                        val message = MessageData(
+                            id = 0,
+                            post_user_id = 0,
+                            message_content = text,
+                            room_id = 0
+                        )
+                        fireStoreHelper.saveUserData(message)
                     }
                     Log.d("print_text", text)
                     text = ""

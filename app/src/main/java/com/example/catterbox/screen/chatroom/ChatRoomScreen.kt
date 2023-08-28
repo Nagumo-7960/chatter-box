@@ -128,7 +128,6 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                         )
                         messageDao.create(messageSample)
                         val message = MessageData(
-                            id = 0,
                             post_user_id = 0,
                             message_content = text,
                             room_id = 0

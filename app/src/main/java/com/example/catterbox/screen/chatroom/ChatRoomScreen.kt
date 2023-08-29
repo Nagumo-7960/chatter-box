@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +41,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
     val fireStoreHelper = FireStoreHelper()
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -132,7 +132,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             message_content = text,
                             room_id = 0
                         )
-                        fireStoreHelper.saveUserData(message)
+                        fireStoreHelper.saveUserData(message, context)
                     }
                     Log.d("print_text", text)
                     text = ""

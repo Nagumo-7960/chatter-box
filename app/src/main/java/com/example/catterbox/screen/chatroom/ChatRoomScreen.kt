@@ -32,6 +32,7 @@ import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.firestore.FireStoreHelper
 import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -127,15 +128,12 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             room_id = 0
                         )
                         messageDao.create(messageSample)
-                        val message = MessageData(
-                            post_user_id = 0,
-                            message_content = text,
-                            room_id = 0
-                        )
-                        fireStoreHelper.saveUserData(message, context)
+                        delay(500)
+                        fireStoreHelper.saveUserData(allMessages.first(), context)
+                        delay(500)
+                        text = ""
                     }
                     Log.d("print_text", text)
-                    text = ""
 
                 }),
                 modifier = Modifier

@@ -1,11 +1,8 @@
 package com.example.catterbox.firestore
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
-import com.example.catterbox.data.MessageData
 import com.example.catterbox.database.model.MessageEntity
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -13,7 +10,7 @@ class FireStoreHelper {
 
     private val firestore = FirebaseFirestore.getInstance()
 
-    fun saveUserData(messageData: MessageEntity, context:Context) {
+    fun saveUserData(messageData: MessageEntity, context: Context) {
         // usersコレクションを指定し、userData.idを一意としたデータを作成し、setで保存する。
         firestore.collection("messages").document(messageData.id.toString())
             .set(messageData)

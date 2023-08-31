@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60158500944",
+    "project_id": "catter-box",
+    "storage_bucket": "catter-box.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60158500944:android:5931f350f4dab122d23155",
+        "android_client_info": {
+          "package_name": "com.example.catterbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60158500944-2gn8a3sgoharlaqiut4s41hnlb7fd13t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcq2sehj9SUQriVnnZJKmQ2ayRoZ8qEm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60158500944-2gn8a3sgoharlaqiut4s41hnlb7fd13t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

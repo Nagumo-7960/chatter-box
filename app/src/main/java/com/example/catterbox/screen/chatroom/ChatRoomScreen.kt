@@ -32,11 +32,9 @@ import com.example.catterbox.ui.theme.CatterBoxTheme
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     val allMessages by chatViewModel.allMessages.collectAsState()
-    val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
     Box(
@@ -108,25 +106,43 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 .padding(32.dp)
                 .align(Alignment.BottomStart),
         ) {
-            BasicTextField(
-                value = text,
-                onValueChange = { text = it },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    keyboardController?.hide()
+            inputTextField(
+                text = text,
+                onValueChange = { newText -> text = newText },
+                onImeAction = {
                     chatViewModel.insertAndSaveMessage(text, context)
                     text = ""
-                    Log.d("print_text", text)
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(36.dp)
-                    .background(color = LightGray, shape = RoundedCornerShape(50))
-                    .padding(top = 8.dp, start = 16.dp)
+                }
             )
-
         }
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun inputTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    onImeAction: () -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    BasicTextField(
+        value = text,
+        onValueChange = { newText ->
+            onValueChange(newText)
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            keyboardController?.hide()
+            onImeAction()
+        }),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(36.dp)
+            .background(color = LightGray, shape = RoundedCornerShape(50))
+            .padding(top = 8.dp, start = 16.dp)
+    )
 }
 
 @Preview

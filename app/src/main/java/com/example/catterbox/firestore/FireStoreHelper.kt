@@ -11,9 +11,9 @@ class FireStoreHelper {
     private val firestore = FirebaseFirestore.getInstance()
 
     fun saveUserData(messageData: MessageEntity, context: Context) {
-        // usersコレクションを指定し、userData.idを一意としたデータを作成し、setで保存する。
-        firestore.collection("messages").document(messageData.id.toString())
-            .set(messageData)
+        // usersコレクションを指定し、ランダムなIDを割り当てて保存する。
+        firestore.collection("messages")
+            .add(messageData)
             .addOnSuccessListener {
                 Toast.makeText(context, "Successfully added", Toast.LENGTH_LONG).show()
                 Log.d("added-message", messageData.toString())

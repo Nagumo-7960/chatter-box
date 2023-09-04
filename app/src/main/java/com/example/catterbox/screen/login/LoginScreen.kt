@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.catterbox.ChatApplication
 import com.example.catterbox.database.model.UserEntity
@@ -40,7 +41,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(toHome: () -> Unit) {
+fun LoginScreen(toHome: () -> Unit,loginViewModel: LoginViewModel) {
     var userName by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -71,12 +72,7 @@ fun LoginScreen(toHome: () -> Unit) {
 
             Button(onClick = {
                 if (userName.isNotBlank()) {
-                    GlobalScope.launch {
-                        val user = UserEntity(
-                            id = 0, name = userName
-                        )
-                        ChatApplication.userDao.create(user)
-                    }
+                    loginViewModel.insert(loginViewModel.generateRandomString(),userName)
                     toHome()
                 } else {
                     Toast.makeText(context, "名前を入力してください", Toast.LENGTH_LONG).show()
@@ -92,9 +88,11 @@ fun LoginScreen(toHome: () -> Unit) {
 @Composable
 fun PreviewLoginScreen() {
     val navController = rememberNavController()
+    val loginViewModel:LoginViewModel = viewModel()
     CatterBoxTheme {
         LoginScreen(
             toHome = { navController.navigate("home") },
+            loginViewModel
         )
     }
 }

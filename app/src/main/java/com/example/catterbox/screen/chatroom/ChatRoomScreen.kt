@@ -69,7 +69,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             //クリックでデータベースから削除
                             chatViewModel.delete(it)
                         }) {
-                            if (it.post_user_id == 2) {
+                            if (it.post_user_id == "") {
                                 Text(
                                     text = it.message_content, modifier = Modifier
                                         .background(

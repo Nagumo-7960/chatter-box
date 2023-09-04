@@ -1,6 +1,5 @@
 package com.example.catterbox.screen.chatroom
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,27 +24,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
-import com.example.catterbox.ChatApplication.Companion.messageDao
-import com.example.catterbox.data.MessageData
 import com.example.catterbox.database.ChatDatabase
-import com.example.catterbox.database.model.MessageEntity
-import com.example.catterbox.firestore.FireStoreHelper
 import com.example.catterbox.ui.theme.CatterBoxTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     val allMessages by chatViewModel.allMessages.collectAsState()
-    val keyboardController = LocalSoftwareKeyboardController.current
     var text by remember { mutableStateOf("") }
-    val fireStoreHelper = FireStoreHelper()
     val context = LocalContext.current
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -53,7 +41,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 .padding(16.dp)
         ) {
             Column {
-                Row() {
+                Row {
                     Button(onClick = { toHome() }) {
                         Text(text = "退室")
                     }
@@ -61,9 +49,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                     Spacer(modifier = Modifier.padding(8.dp))
 
                     Button(onClick = {
-                        GlobalScope.launch {
-                            messageDao.deleteAll()
-                        }
+                        chatViewModel.deleteAll()
                     }) {
                         Text(text = "メッセージ全削除")
                     }
@@ -72,29 +58,29 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            LazyColumn(modifier = Modifier.fillMaxWidth().padding(bottom = 56.dp)) {
-                item{
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 56.dp)
+            ) {
+                item {
                     allMessages.asReversed().forEach {
-                        Column (modifier = Modifier.clickable {
+                        Column(modifier = Modifier.clickable {
                             //クリックでデータベースから削除
-                            GlobalScope.launch {
-                                messageDao.delete(messageEntity = it)
-                            }
-                        }){
-                            if(it.post_user_id==2){
+                            chatViewModel.delete(it)
+                        }) {
+                            if (it.post_user_id == "") {
                                 Text(
-                                    text = it.message_content,
-                                    modifier = Modifier
+                                    text = it.message_content, modifier = Modifier
                                         .background(
                                             color = Color(0xFF9BFF9F),
                                             shape = RoundedCornerShape(50)
                                         )
                                         .padding(8.dp)
                                 )
-                            }else{
+                            } else {
                                 Text(
-                                    text = it.message_content,
-                                    modifier = Modifier
+                                    text = it.message_content, modifier = Modifier
                                         .background(
                                             color = Color(0xFF96F3FF),
                                             shape = RoundedCornerShape(50)
@@ -103,48 +89,55 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                                 )
                             }
                         }
+
                         Spacer(modifier = Modifier.padding(8.dp))
+
                     }
                 }
             }
         }
-
         Column(
             modifier = Modifier
                 .padding(32.dp)
                 .align(Alignment.BottomStart),
         ) {
-            BasicTextField(
-                value = text,
-                onValueChange = { text = it },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    keyboardController?.hide()
-                    GlobalScope.launch {
-                        val messageSample = MessageEntity(
-                            id = 0,
-                            post_user_id = 2,
-                            message_content = text,
-                            room_id = 0
-                        )
-                        messageDao.create(messageSample)
-                        delay(500)
-                        fireStoreHelper.saveUserData(allMessages.first(), context)
-                        delay(500)
-                        text = ""
-                    }
-                    Log.d("print_text", text)
-
-                }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(36.dp)
-                    .background(color = LightGray, shape = RoundedCornerShape(50))
-                    .padding(top = 8.dp, start = 16.dp)
+            inputTextField(
+                text = text,
+                onValueChange = { newText -> text = newText },
+                onImeAction = {
+                    chatViewModel.insertAndSaveMessage(text, context)
+                    text = ""
+                }
             )
-
         }
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun inputTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    onImeAction: () -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    BasicTextField(
+        value = text,
+        onValueChange = { newText ->
+            onValueChange(newText)
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            keyboardController?.hide()
+            onImeAction()
+        }),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(36.dp)
+            .background(color = LightGray, shape = RoundedCornerShape(50))
+            .padding(top = 8.dp, start = 16.dp)
+    )
 }
 
 @Preview
@@ -152,14 +145,11 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
     ChatApplication.chatDatabase = Room.databaseBuilder(
-        LocalContext.current,
-        ChatDatabase::class.java,
-        "chat-database"
+        LocalContext.current, ChatDatabase::class.java, "chat-database"
     ).build()
     CatterBoxTheme {
         ChatRoomScreen(
-            toHome = { navController.navigate("home") },
-            chatViewModel = ChatRoomViewModel()
+            toHome = { navController.navigate("home") }, chatViewModel = ChatRoomViewModel()
         )
     }
 }

@@ -33,22 +33,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-    }
-
-
-    fun createDummyData(){
-        for (i in 1..5){
-            GlobalScope.launch {
-                val messageSample = MessageEntity(
-                    id = 0,
-                    post_user_id = 1,
-                    message_content = "やっほーい(${i})",
-                    room_id = 0
-                )
-                ChatApplication.messageDao.create(messageSample)
-            }
-        }
     }
 }
 

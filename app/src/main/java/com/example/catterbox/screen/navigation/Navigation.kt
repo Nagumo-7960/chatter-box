@@ -11,6 +11,7 @@ import com.example.catterbox.screen.chatroom.ChatRoomViewModel
 import com.example.catterbox.screen.home.HomeScreen
 import com.example.catterbox.screen.home.HomeViewModel
 import com.example.catterbox.screen.login.LoginScreen
+import com.example.catterbox.screen.login.LoginViewModel
 
 @Composable
 fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
@@ -22,6 +23,7 @@ fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
         composable(AppScreen.Login.route) {
             LoginScreen(
                 toHome = { navController.navigate(AppScreen.Home.route) },
+                loginViewModel = LoginViewModel()
             )
         }
         composable(AppScreen.Home.route) {

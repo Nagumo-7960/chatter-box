@@ -10,6 +10,7 @@ import com.example.catterbox.database.dao.UserDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.database.model.UserEntity
 import com.example.catterbox.firestore.FireStoreHelper
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -59,7 +60,7 @@ class ChatRoomViewModel: ViewModel() {
                 room_id = 0
             )
             messageDAO.create(newMessage)
-
+            delay(200)
             // メッセージが追加された後にfireStoreにデータを保存
             FireStoreHelper().saveUserData(allMessages.value.first(), context)
         }

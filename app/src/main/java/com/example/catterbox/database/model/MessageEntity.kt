@@ -9,5 +9,6 @@ data class MessageEntity(
     val id:Int = 0,
     val post_user_id: String,
     val message_content:String,
+    val created_at:Long,
     val room_id:Int
 )

@@ -57,6 +57,7 @@ class ChatRoomViewModel: ViewModel() {
                 id = 0,
                 post_user_id = users.value.first().id,
                 message_content = messageContent,
+                created_at = System.currentTimeMillis(),
                 room_id = 0
             )
             messageDAO.create(newMessage)

@@ -1,9 +1,11 @@
 package com.example.catterbox.screen.chatroom
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -29,9 +31,10 @@ import com.example.catterbox.ui.theme.CatterBoxTheme
 
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
-    val allMessages by chatViewModel.allMessages.collectAsState()
+    val allMessages by chatViewModel.messageList.collectAsState()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -62,37 +65,22 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 56.dp)
+
+
             ) {
-                item {
-                    allMessages.asReversed().forEach {
-                        Column(modifier = Modifier.clickable {
-                            //クリックでデータベースから削除
-                            chatViewModel.delete(it)
-                        }) {
-                            if (it.post_user_id == "") {
-                                Text(
-                                    text = it.message_content, modifier = Modifier
-                                        .background(
-                                            color = Color(0xFF9BFF9F),
-                                            shape = RoundedCornerShape(50)
-                                        )
-                                        .padding(8.dp)
-                                )
-                            } else {
-                                Text(
-                                    text = it.message_content, modifier = Modifier
-                                        .background(
-                                            color = Color(0xFF96F3FF),
-                                            shape = RoundedCornerShape(50)
-                                        )
-                                        .padding(8.dp)
-                                )
-                            }
-                        }
+                items(allMessages) { message ->
+                    Text(
+                        text = message,
+                        modifier = Modifier
+                            .background(
+                                color = Color(0xFF9BFF9F),
+                                shape = RoundedCornerShape(50)
+                            )
+                            .padding(8.dp)
+                    )
 
-                        Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(8.dp))
 
-                    }
                 }
             }
         }

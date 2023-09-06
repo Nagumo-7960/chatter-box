@@ -1,6 +1,7 @@
 package com.example.catterbox.screen.chatroom
 
 import android.content.Context
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
@@ -10,6 +11,7 @@ import com.example.catterbox.database.dao.UserDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.database.model.UserEntity
 import com.example.catterbox.firestore.FireStoreHelper
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,9 +23,11 @@ class ChatRoomViewModel: ViewModel() {
     private val _allMessages = MutableStateFlow<List<MessageEntity>>(emptyList())
     private val userDAO: UserDAO = ChatApplication.chatDatabase.userDao()
     private val _users = MutableStateFlow<List<UserEntity>>(emptyList())
+    private val _messageList = MutableStateFlow<List<String>>(emptyList())
 
     val allMessages: StateFlow<List<MessageEntity>> get() = _allMessages
     val users: StateFlow<List<UserEntity>> get() = _users
+    val messageList: StateFlow<List<String>> = _messageList
 
     init {
         // Update _allNotes with the latest data from the database
@@ -37,6 +41,8 @@ class ChatRoomViewModel: ViewModel() {
                 _users.value = user
             }
         }
+        fetchMessagesFromFirestore()
+
     }
 
     fun insert(note: MessageEntity) = viewModelScope.launch {
@@ -64,6 +70,12 @@ class ChatRoomViewModel: ViewModel() {
             delay(200)
             // メッセージが追加された後にfireStoreにデータを保存
             FireStoreHelper().saveUserData(allMessages.value.first(), context)
+        }
+    }
+
+    fun fetchMessagesFromFirestore() {
+        FireStoreHelper().fetchMessagesFromFirestore { messages ->
+            _messageList.value = messages
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.catterbox.screen.chatroom
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -30,9 +31,11 @@ import com.example.catterbox.ui.theme.CatterBoxTheme
 
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
-    val allMessages by chatViewModel.allMessages.collectAsState()
+//    val allMessages by chatViewModel.allMessages.collectAsState()
+    val allMessages by chatViewModel.messageList.collectAsState()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -66,7 +69,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 
 
             ) {
-                items(chatViewModel.messageList.value) { message ->
+                items(allMessages) { message ->
                     Text(
                         text = message,
                         modifier = Modifier
@@ -76,7 +79,9 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             )
                             .padding(8.dp)
                     )
+
                     Spacer(modifier = Modifier.padding(8.dp))
+
                 }
             }
         }

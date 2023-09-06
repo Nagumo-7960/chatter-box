@@ -1,6 +1,7 @@
 package com.example.catterbox.screen.chatroom
 
 import android.content.Context
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
@@ -41,6 +42,7 @@ class ChatRoomViewModel: ViewModel() {
             }
         }
         fetchMessagesFromFirestore()
+
     }
 
     fun insert(note: MessageEntity) = viewModelScope.launch {
@@ -71,7 +73,7 @@ class ChatRoomViewModel: ViewModel() {
         }
     }
 
-    private fun fetchMessagesFromFirestore() {
+    fun fetchMessagesFromFirestore() {
         FireStoreHelper().fetchMessagesFromFirestore { messages ->
             _messageList.value = messages
         }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.catterbox.database.model.MessageEntity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class FireStoreHelper {
 
@@ -23,7 +24,9 @@ class FireStoreHelper {
 
 
     fun fetchMessagesFromFirestore(callback: (List<String>) -> Unit) {
-        firestore.collection("messages").addSnapshotListener { value, _ ->
+        firestore.collection("messages")
+            .orderBy("created_at", Query.Direction.ASCENDING)
+            .addSnapshotListener { value, _ ->
             val messages = value?.documents?.mapNotNull { document ->
                 document.getString("message_content")
             } ?: emptyList()

@@ -31,7 +31,6 @@ import com.example.catterbox.ui.theme.CatterBoxTheme
 
 @Composable
 fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
-//    val allMessages by chatViewModel.allMessages.collectAsState()
     val allMessages by chatViewModel.messageList.collectAsState()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current

@@ -38,8 +38,7 @@ class ChatRoomViewModel: ViewModel() {
                 _users.value = user
             }
         }
-        fetchMessagesFromFirestore()
-
+        fetchMessages()
     }
 
     fun insert(note: MessageEntity) = viewModelScope.launch {
@@ -70,7 +69,7 @@ class ChatRoomViewModel: ViewModel() {
         }
     }
 
-    fun fetchMessagesFromFirestore() {
+    fun fetchMessages() {
         viewModelScope.launch {
             FireStoreHelper().fetchMessagesFromFirestore ().collect(){
                 messages ->

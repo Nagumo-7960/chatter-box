@@ -49,11 +49,6 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
 
                     Spacer(modifier = Modifier.padding(8.dp))
 
-                    Button(onClick = {
-                        chatViewModel.deleteAll()
-                    }) {
-                        Text(text = "メッセージ全削除")
-                    }
                 }
             }
 
@@ -91,7 +86,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 text = text,
                 onValueChange = { newText -> text = newText },
                 onImeAction = {
-                    chatViewModel.insertAndSaveMessage(text, context)
+                    chatViewModel.sendMessage(text, context)
                     text = ""
                 }
             )

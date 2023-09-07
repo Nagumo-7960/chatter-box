@@ -6,6 +6,11 @@ import android.widget.Toast
 import com.example.catterbox.database.model.MessageEntity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class FireStoreHelper {
 
@@ -23,14 +28,23 @@ class FireStoreHelper {
     }
 
 
-    fun fetchMessagesFromFirestore(callback: (List<String>) -> Unit) {
-        firestore.collection("messages")
-            .orderBy("created_at", Query.Direction.ASCENDING)
-            .addSnapshotListener { value, _ ->
-            val messages = value?.documents?.mapNotNull { document ->
+
+    suspend fun fetchMessagesFromFirestore(): Flow<List<String>> = flow {
+        try {
+            val querySnapshot = withContext(Dispatchers.IO) {
+                firestore.collection("messages")
+                    .orderBy("created_at")
+                    .get()
+                    .await()
+            }
+
+            val messages = querySnapshot.documents.mapNotNull { document ->
                 document.getString("message_content")
-            } ?: emptyList()
-            callback(messages)
+            }
+
+            emit(messages)
+        } catch (e: Exception) {
+            // エラーハンドリングが必要な場合の処理
         }
     }
 

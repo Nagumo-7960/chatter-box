@@ -1,7 +1,6 @@
 package com.example.catterbox.screen.chatroom
 
 import android.content.Context
-import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
@@ -11,11 +10,9 @@ import com.example.catterbox.database.dao.UserDAO
 import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.database.model.UserEntity
 import com.example.catterbox.firestore.FireStoreHelper
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ChatRoomViewModel: ViewModel() {
@@ -74,8 +71,11 @@ class ChatRoomViewModel: ViewModel() {
     }
 
     fun fetchMessagesFromFirestore() {
-        FireStoreHelper().fetchMessagesFromFirestore { messages ->
-            _messageList.value = messages
+        viewModelScope.launch {
+            FireStoreHelper().fetchMessagesFromFirestore ().collect(){
+                messages ->
+                _messageList.value = messages
+            }
         }
     }
 }

@@ -57,9 +57,8 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 56.dp)
-
-
+                    .padding(bottom = 56.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(allMessages) { message ->
                     Text(
@@ -71,9 +70,6 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                             )
                             .padding(8.dp)
                     )
-
-                    Spacer(modifier = Modifier.padding(8.dp))
-
                 }
             }
         }

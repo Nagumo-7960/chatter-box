@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
 import com.example.catterbox.database.dao.UserDAO
-import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.database.model.UserEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +25,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun insert(userId:String, userName:String){
+    fun insert(userId: String, userName: String) {
         viewModelScope.launch {
             val user = UserEntity(
                 id = userId,
@@ -36,7 +35,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun generateRandomString(): String {
+    fun generateUserId(): String {
         val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         return (1..20)
             .map { charset[Random.nextInt(0, charset.length)] }

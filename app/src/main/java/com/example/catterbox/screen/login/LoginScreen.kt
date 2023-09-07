@@ -32,16 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.ChatApplication
-import com.example.catterbox.database.model.UserEntity
 import com.example.catterbox.ui.theme.CatterBoxTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(toHome: () -> Unit,loginViewModel: LoginViewModel) {
+fun LoginScreen(toHome: () -> Unit, loginViewModel: LoginViewModel) {
     var userName by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -72,7 +68,7 @@ fun LoginScreen(toHome: () -> Unit,loginViewModel: LoginViewModel) {
 
             Button(onClick = {
                 if (userName.isNotBlank()) {
-                    loginViewModel.insert(loginViewModel.generateRandomString(),userName)
+                    loginViewModel.insert(loginViewModel.generateUserId(), userName)
                     toHome()
                 } else {
                     Toast.makeText(context, "名前を入力してください", Toast.LENGTH_LONG).show()
@@ -88,7 +84,7 @@ fun LoginScreen(toHome: () -> Unit,loginViewModel: LoginViewModel) {
 @Composable
 fun PreviewLoginScreen() {
     val navController = rememberNavController()
-    val loginViewModel:LoginViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
     CatterBoxTheme {
         LoginScreen(
             toHome = { navController.navigate("home") },

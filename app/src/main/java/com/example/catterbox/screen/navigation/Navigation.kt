@@ -15,7 +15,7 @@ import com.example.catterbox.screen.login.LoginViewModel
 
 @Composable
 fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
-    val allUsers by homeViewModel.allUsers.collectAsState()
+    val allUsers by homeViewModel.user.collectAsState()
     NavHost(
         navController = navController,
         startDestination = if(allUsers.isNotEmpty()) AppScreen.Home.route else AppScreen.Login.route

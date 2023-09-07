@@ -8,15 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.database.model.MessageEntity
 import com.example.catterbox.screen.home.HomeViewModel
 import com.example.catterbox.screen.navigation.Navigation
 import com.example.catterbox.ui.theme.CatterBoxTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-
-val isLoggedInState = MutableStateFlow(false)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    Navigation(navController = navController,homeViewModel = HomeViewModel())
+                    Navigation(navController = navController, homeViewModel = HomeViewModel())
                 }
             }
         }

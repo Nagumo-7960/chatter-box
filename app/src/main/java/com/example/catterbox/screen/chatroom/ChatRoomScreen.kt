@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -33,6 +34,8 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
 
+    val scrollState = rememberLazyListState()
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -58,7 +61,8 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 56.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                state = scrollState
             ) {
                 items(allMessages) { message ->
                     Text(
@@ -87,6 +91,11 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
                 }
             )
         }
+
+        LaunchedEffect(allMessages) {
+            scrollState.scrollToItem(allMessages.size)
+        }
+
     }
 }
 

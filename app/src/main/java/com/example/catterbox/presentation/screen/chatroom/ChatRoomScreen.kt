@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
@@ -29,7 +30,7 @@ import com.example.catterbox.data.database.ChatDatabase
 import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 @Composable
-fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel) {
+fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel = hiltViewModel()) {
     val allMessages by chatViewModel.messageList.collectAsState()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -126,16 +127,16 @@ fun inputTextField(
     )
 }
 
-@Preview
-@Composable
-fun PreviewChatRoomScreen() {
-    val navController = rememberNavController()
-    ChatApplication.chatDatabase = Room.databaseBuilder(
-        LocalContext.current, ChatDatabase::class.java, "chat-database"
-    ).build()
-    CatterBoxTheme {
-        ChatRoomScreen(
-            toHome = { navController.navigate("home") }, chatViewModel = ChatRoomViewModel()
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewChatRoomScreen() {
+//    val navController = rememberNavController()
+//    ChatApplication.chatDatabase = Room.databaseBuilder(
+//        LocalContext.current, ChatDatabase::class.java, "chat-database"
+//    ).build()
+//    CatterBoxTheme {
+//        ChatRoomScreen(
+//            toHome = { navController.navigate("home") }, chatViewModel = ChatRoomViewModel()
+//        )
+//    }
+//}

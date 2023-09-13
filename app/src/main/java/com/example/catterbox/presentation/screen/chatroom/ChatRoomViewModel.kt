@@ -4,16 +4,21 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
+import com.example.catterbox.data.database.dao.MessageDAO
 import com.example.catterbox.data.database.dao.UserDAO
 import com.example.catterbox.data.database.model.MessageEntity
 import com.example.catterbox.data.database.model.UserEntity
 import com.example.catterbox.data.firestore.FireStoreHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatRoomViewModel : ViewModel() {
-    private val userDAO: UserDAO = ChatApplication.chatDatabase.userDao()
+@HiltViewModel
+class ChatRoomViewModel @Inject constructor(
+    private val userDAO: UserDAO
+): ViewModel() {
     private val _user = MutableStateFlow<List<UserEntity>>(emptyList())
     private val _messageList = MutableStateFlow<List<String>>(emptyList())
 

@@ -3,6 +3,7 @@ package com.example.catterbox.presentation.screen.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,8 +35,7 @@ fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
         }
         composable(AppScreen.Room.route) {
             ChatRoomScreen(
-                toHome = { navController.navigate(AppScreen.Home.route) },
-                chatViewModel = ChatRoomViewModel()
+                toHome = { navController.navigate(AppScreen.Home.route) }
             )
         }
     }

@@ -6,7 +6,9 @@ import androidx.room.Room
 import com.example.catterbox.data.database.ChatDatabase
 import com.example.catterbox.data.database.dao.MessageDAO
 import com.example.catterbox.data.database.dao.UserDAO
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class ChatApplication : Application() {
 
     companion object {

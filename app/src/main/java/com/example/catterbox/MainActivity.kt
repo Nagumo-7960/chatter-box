@@ -11,7 +11,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.catterbox.presentation.screen.home.HomeViewModel
 import com.example.catterbox.presentation.screen.navigation.Navigation
 import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

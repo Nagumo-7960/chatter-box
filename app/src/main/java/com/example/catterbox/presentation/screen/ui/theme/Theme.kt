@@ -1,4 +1,4 @@
-package com.example.catterbox.ui.theme
+package com.example.catterbox.presentation.screen.ui.theme
 
 import android.app.Activity
 import android.os.Build

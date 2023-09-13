@@ -1,13 +1,13 @@
-package com.example.catterbox.screen.chatroom
+package com.example.catterbox.presentation.screen.chatroom
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catterbox.ChatApplication
-import com.example.catterbox.database.dao.UserDAO
-import com.example.catterbox.database.model.MessageEntity
-import com.example.catterbox.database.model.UserEntity
-import com.example.catterbox.firestore.FireStoreHelper
+import com.example.catterbox.data.database.dao.UserDAO
+import com.example.catterbox.data.database.model.MessageEntity
+import com.example.catterbox.data.database.model.UserEntity
+import com.example.catterbox.data.firestore.FireStoreHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

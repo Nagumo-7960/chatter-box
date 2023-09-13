@@ -1,4 +1,4 @@
-package com.example.catterbox.ui.theme
+package com.example.catterbox.presentation.screen.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

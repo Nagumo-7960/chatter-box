@@ -8,9 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.screen.home.HomeViewModel
-import com.example.catterbox.screen.navigation.Navigation
-import com.example.catterbox.ui.theme.CatterBoxTheme
+import com.example.catterbox.presentation.screen.home.HomeViewModel
+import com.example.catterbox.presentation.screen.navigation.Navigation
+import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

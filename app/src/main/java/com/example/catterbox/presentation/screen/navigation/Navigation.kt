@@ -1,4 +1,4 @@
-package com.example.catterbox.screen.navigation
+package com.example.catterbox.presentation.screen.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.catterbox.screen.chatroom.ChatRoomScreen
-import com.example.catterbox.screen.chatroom.ChatRoomViewModel
-import com.example.catterbox.screen.home.HomeScreen
-import com.example.catterbox.screen.home.HomeViewModel
-import com.example.catterbox.screen.login.LoginScreen
-import com.example.catterbox.screen.login.LoginViewModel
+import com.example.catterbox.presentation.screen.chatroom.ChatRoomScreen
+import com.example.catterbox.presentation.screen.chatroom.ChatRoomViewModel
+import com.example.catterbox.presentation.screen.home.HomeScreen
+import com.example.catterbox.presentation.screen.home.HomeViewModel
+import com.example.catterbox.presentation.screen.login.LoginScreen
+import com.example.catterbox.presentation.screen.login.LoginViewModel
 
 @Composable
 fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {

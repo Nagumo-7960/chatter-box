@@ -1,4 +1,4 @@
-package com.example.catterbox.screen.login
+package com.example.catterbox.presentation.screen.login
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.catterbox.ui.theme.CatterBoxTheme
+import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 
 @OptIn(ExperimentalComposeUiApi::class)

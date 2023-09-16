@@ -35,7 +35,8 @@ fun Navigation(navController: NavHostController,homeViewModel: HomeViewModel) {
         }
         composable(AppScreen.Room.route) {
             ChatRoomScreen(
-                toHome = { navController.navigate(AppScreen.Home.route) }
+                toHome = { navController.navigate(AppScreen.Home.route) },
+                chatViewModel = hiltViewModel()
             )
         }
     }

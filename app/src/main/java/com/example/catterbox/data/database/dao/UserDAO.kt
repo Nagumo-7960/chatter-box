@@ -1,7 +1,7 @@
-package com.example.catterbox.database.dao
+package com.example.catterbox.data.database.dao
 
 import androidx.room.*
-import com.example.catterbox.database.model.UserEntity
+import com.example.catterbox.data.database.model.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

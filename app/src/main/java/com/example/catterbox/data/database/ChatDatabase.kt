@@ -1,13 +1,13 @@
-package com.example.catterbox.database
+package com.example.catterbox.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.catterbox.database.dao.ChatRoomDAO
-import com.example.catterbox.database.dao.MessageDAO
-import com.example.catterbox.database.dao.UserDAO
-import com.example.catterbox.database.model.ChatRoomEntity
-import com.example.catterbox.database.model.MessageEntity
-import com.example.catterbox.database.model.UserEntity
+import com.example.catterbox.data.database.dao.ChatRoomDAO
+import com.example.catterbox.data.database.dao.MessageDAO
+import com.example.catterbox.data.database.dao.UserDAO
+import com.example.catterbox.data.database.model.ChatRoomEntity
+import com.example.catterbox.data.database.model.MessageEntity
+import com.example.catterbox.data.database.model.UserEntity
 
 @Database(
     entities = [

@@ -1,4 +1,4 @@
-package com.example.catterbox.database.model
+package com.example.catterbox.data.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,9 +1,9 @@
-package com.example.catterbox.firestore
+package com.example.catterbox.data.firestore
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.example.catterbox.database.model.MessageEntity
+import com.example.catterbox.data.database.model.MessageEntity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.catterbox.screen.navigation
+package com.example.catterbox.presentation.screen.navigation
 
 sealed class AppScreen (val route:String){
     object Login : AppScreen("login")

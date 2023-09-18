@@ -1,4 +1,4 @@
-package com.example.catterbox.screen.home
+package com.example.catterbox.presentation.screen.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
-import com.example.catterbox.database.ChatDatabase
-import com.example.catterbox.screen.navigation.AppScreen
-import com.example.catterbox.ui.theme.CatterBoxTheme
+import com.example.catterbox.data.database.ChatDatabase
+import com.example.catterbox.presentation.screen.navigation.AppScreen
+import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 @Composable
 fun HomeScreen(toChatRoom: () -> Unit, homeViewModel: HomeViewModel) {

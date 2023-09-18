@@ -1,4 +1,4 @@
-package com.example.catterbox.ui.theme
+package com.example.catterbox.presentation.screen.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

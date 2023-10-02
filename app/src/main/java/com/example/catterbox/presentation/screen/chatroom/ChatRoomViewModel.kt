@@ -20,9 +20,8 @@ class ChatRoomViewModel @Inject constructor(
     private val userDAO: UserDAO
 ): ViewModel() {
     private val _user = MutableStateFlow<List<UserEntity>>(emptyList())
-    private val _messageList = MutableStateFlow<List<String>>(emptyList())
-
     val user: StateFlow<List<UserEntity>> get() = _user
+    private val _messageList = MutableStateFlow<List<String>>(emptyList())
     val messageList: StateFlow<List<String>> = _messageList
 
     init {

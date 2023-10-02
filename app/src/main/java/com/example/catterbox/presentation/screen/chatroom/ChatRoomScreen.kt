@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
@@ -30,10 +31,29 @@ import com.example.catterbox.data.database.ChatDatabase
 import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 @Composable
-fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel = hiltViewModel()) {
-    val allMessages by chatViewModel.messageList.collectAsState()
-    var text by remember { mutableStateOf("") }
+fun ChatRoomScreen(
+    toHome: () -> Unit,
+    chatViewModel: ChatRoomViewModel = hiltViewModel()
+) {
+    val allMessages by chatViewModel.messageList.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    ChatRoomContent(
+        toHome = toHome,
+//        viewModel = chatViewModel,
+        sendMessage = {
+            chatViewModel.sendMessage(allMessages.last(), context)
+        }
+    )
+}
+
+@Composable
+fun ChatRoomContent(
+    toHome: () -> Unit,
+    sendMessage:() -> Unit
+) {
+//    val allMessages by viewModel.messageList.collectAsStateWithLifecycle()
+    val allMessages: List<String> by remember { mutableStateOf(listOf()) }
+    var text by remember { mutableStateOf("") }
 
     val scrollState = rememberLazyListState()
 
@@ -87,7 +107,7 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel = hiltVi
                 text = text,
                 onValueChange = { newText -> text = newText },
                 onImeAction = {
-                    chatViewModel.sendMessage(text, context)
+                    sendMessage()
                     text = ""
                 }
             )
@@ -127,16 +147,17 @@ fun inputTextField(
     )
 }
 
-//@Preview
-//@Composable
-//fun PreviewChatRoomScreen() {
-//    val navController = rememberNavController()
-//    ChatApplication.chatDatabase = Room.databaseBuilder(
-//        LocalContext.current, ChatDatabase::class.java, "chat-database"
-//    ).build()
-//    CatterBoxTheme {
-//        ChatRoomScreen(
-//            toHome = { navController.navigate("home") }, chatViewModel = ChatRoomViewModel()
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewChatRoomScreen() {
+    val navController = rememberNavController()
+    ChatApplication.chatDatabase = Room.databaseBuilder(
+        LocalContext.current, ChatDatabase::class.java, "chat-database"
+    ).build()
+    CatterBoxTheme {
+        ChatRoomContent(
+            toHome = { navController.navigate("home") },
+            sendMessage = {}
+        )
+    }
+}

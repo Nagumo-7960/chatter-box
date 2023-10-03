@@ -36,12 +36,22 @@ fun ChatRoomScreen(
     chatViewModel: ChatRoomViewModel = hiltViewModel()
 ) {
     val allMessages by chatViewModel.messageList.collectAsStateWithLifecycle()
+    var text by remember { mutableStateOf("") }
     val context = LocalContext.current
     ChatRoomContent(
         toHome = toHome,
-//        viewModel = chatViewModel,
         sendMessage = {
-            chatViewModel.sendMessage(allMessages.last(), context)
+            chatViewModel.sendMessage(text, context)
+        },
+        // viewModelから受け取ったメッセージのリストを渡す
+        allMessages = allMessages,
+        text = text,
+        onValueChange = { newText ->
+            text = newText
+        },
+        onImeAction = {
+            chatViewModel.sendMessage(text, context)
+            text = ""
         }
     )
 }
@@ -49,12 +59,13 @@ fun ChatRoomScreen(
 @Composable
 fun ChatRoomContent(
     toHome: () -> Unit,
-    sendMessage:() -> Unit
+    sendMessage:() -> Unit,
+    //viewModelから受け取るメッセージのリスト
+    allMessages: List<String>,
+    text: String = "",
+    onValueChange: (String) -> Unit,
+    onImeAction: () -> Unit
 ) {
-//    val allMessages by viewModel.messageList.collectAsStateWithLifecycle()
-    val allMessages: List<String> by remember { mutableStateOf(listOf()) }
-    var text by remember { mutableStateOf("") }
-
     val scrollState = rememberLazyListState()
 
     Box(
@@ -105,10 +116,11 @@ fun ChatRoomContent(
         ) {
             inputTextField(
                 text = text,
-                onValueChange = { newText -> text = newText },
+                    onValueChange = { newText ->
+                        onValueChange(newText)
+                    },
                 onImeAction = {
-                    sendMessage()
-                    text = ""
+                    onImeAction()
                 }
             )
         }
@@ -157,7 +169,11 @@ fun PreviewChatRoomScreen() {
     CatterBoxTheme {
         ChatRoomContent(
             toHome = { navController.navigate("home") },
-            sendMessage = {}
+            sendMessage = {},
+            allMessages = listOf("こんにちはー", "どもどもー", "今朝の話なんだけど、突然のことでねー。"),
+            text = "",
+            onValueChange = {},
+            onImeAction = {}
         )
     }
 }

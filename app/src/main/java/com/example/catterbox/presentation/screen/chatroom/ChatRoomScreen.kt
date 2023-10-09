@@ -33,9 +33,9 @@ import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 @Composable
 fun ChatRoomScreen(
     toHome: () -> Unit,
-    chatViewModel: ChatRoomViewModel = hiltViewModel()
+    viewModel: ChatRoomViewModel = hiltViewModel()
 ) {
-    val allMessages by chatViewModel.messageList.collectAsStateWithLifecycle()
+    val allMessages by viewModel.messageList.collectAsStateWithLifecycle()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
     ChatRoomContent(
@@ -46,7 +46,7 @@ fun ChatRoomScreen(
             text = newText
         },
         onImeAction = {
-            chatViewModel.sendMessage(text, context)
+            viewModel.sendMessage(text, context)
             text = ""
         }
     )
@@ -158,7 +158,9 @@ fun inputTextField(
 fun PreviewChatRoomScreen() {
     val navController = rememberNavController()
     ChatApplication.chatDatabase = Room.databaseBuilder(
-        LocalContext.current, ChatDatabase::class.java, "chat-database"
+        LocalContext.current,
+        ChatDatabase::class.java,
+        "chat-database"
     ).build()
     CatterBoxTheme {
         ChatRoomContent(

@@ -40,10 +40,6 @@ fun ChatRoomScreen(
     val context = LocalContext.current
     ChatRoomContent(
         toHome = toHome,
-        sendMessage = {
-            chatViewModel.sendMessage(text, context)
-        },
-        // viewModelから受け取ったメッセージのリストを渡す
         allMessages = allMessages,
         text = text,
         onValueChange = { newText ->
@@ -59,8 +55,6 @@ fun ChatRoomScreen(
 @Composable
 fun ChatRoomContent(
     toHome: () -> Unit,
-    sendMessage:() -> Unit,
-    //viewModelから受け取るメッセージのリスト
     allMessages: List<String>,
     text: String = "",
     onValueChange: (String) -> Unit,
@@ -169,9 +163,8 @@ fun PreviewChatRoomScreen() {
     CatterBoxTheme {
         ChatRoomContent(
             toHome = { navController.navigate("home") },
-            sendMessage = {},
             allMessages = listOf("こんにちはー", "どもどもー", "今朝の話なんだけど、突然のことでねー。"),
-            text = "",
+            text = "気づいたら猫になってたんだー",
             onValueChange = {},
             onImeAction = {}
         )

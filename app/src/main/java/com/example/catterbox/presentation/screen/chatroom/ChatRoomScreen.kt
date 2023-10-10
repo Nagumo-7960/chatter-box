@@ -91,15 +91,21 @@ fun ChatRoomContent(
                 state = scrollState
             ) {
                 items(allMessages) { message ->
-                    Text(
-                        text = message,
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFF9BFF9F),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(8.dp)
-                    )
+                    Row {
+                        Text(
+                            text = "user",
+                            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp)
+                        )
+                        Text(
+                            text = message,
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFF9BFF9F),
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .padding(8.dp)
+                        )
+                    }
                 }
             }
         }

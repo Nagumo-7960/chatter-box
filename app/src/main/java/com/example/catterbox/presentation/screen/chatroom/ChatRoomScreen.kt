@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
@@ -30,11 +31,35 @@ import com.example.catterbox.data.database.ChatDatabase
 import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 @Composable
-fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel = hiltViewModel()) {
-    val allMessages by chatViewModel.messageList.collectAsState()
+fun ChatRoomScreen(
+    toHome: () -> Unit,
+    viewModel: ChatRoomViewModel = hiltViewModel()
+) {
+    val allMessages by viewModel.messageList.collectAsStateWithLifecycle()
     var text by remember { mutableStateOf("") }
     val context = LocalContext.current
+    ChatRoomContent(
+        toHome = toHome,
+        allMessages = allMessages,
+        text = text,
+        onValueChange = { newText ->
+            text = newText
+        },
+        onImeAction = {
+            viewModel.sendMessage(text, context)
+            text = ""
+        }
+    )
+}
 
+@Composable
+fun ChatRoomContent(
+    toHome: () -> Unit,
+    allMessages: List<String>,
+    text: String = "",
+    onValueChange: (String) -> Unit,
+    onImeAction: () -> Unit
+) {
     val scrollState = rememberLazyListState()
 
     Box(
@@ -85,10 +110,11 @@ fun ChatRoomScreen(toHome: () -> Unit, chatViewModel: ChatRoomViewModel = hiltVi
         ) {
             inputTextField(
                 text = text,
-                onValueChange = { newText -> text = newText },
+                    onValueChange = { newText ->
+                        onValueChange(newText)
+                    },
                 onImeAction = {
-                    chatViewModel.sendMessage(text, context)
-                    text = ""
+                    onImeAction()
                 }
             )
         }
@@ -127,16 +153,22 @@ fun inputTextField(
     )
 }
 
-//@Preview
-//@Composable
-//fun PreviewChatRoomScreen() {
-//    val navController = rememberNavController()
-//    ChatApplication.chatDatabase = Room.databaseBuilder(
-//        LocalContext.current, ChatDatabase::class.java, "chat-database"
-//    ).build()
-//    CatterBoxTheme {
-//        ChatRoomScreen(
-//            toHome = { navController.navigate("home") }, chatViewModel = ChatRoomViewModel()
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun PreviewChatRoomScreen() {
+    val navController = rememberNavController()
+    ChatApplication.chatDatabase = Room.databaseBuilder(
+        LocalContext.current,
+        ChatDatabase::class.java,
+        "chat-database"
+    ).build()
+    CatterBoxTheme {
+        ChatRoomContent(
+            toHome = { navController.navigate("home") },
+            allMessages = listOf("こんにちはー", "どもどもー", "今朝の話なんだけど、突然のことでねー。"),
+            text = "気づいたら猫になってたんだー",
+            onValueChange = {},
+            onImeAction = {}
+        )
+    }
+}

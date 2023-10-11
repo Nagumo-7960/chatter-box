@@ -6,11 +6,6 @@ import android.widget.Toast
 import com.example.catterbox.data.database.model.MessageEntity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 class FireStoreHelper {
 
@@ -29,12 +24,20 @@ class FireStoreHelper {
 
 
 
-    fun fetchMessagesFromFirestore(callback: (List<String>) -> Unit) {
+    fun fetchMessageEntityFromFirestore(callback: (List<MessageEntity>) -> Unit) {
         firestore.collection("messages")
             .orderBy("created_at", Query.Direction.ASCENDING)
             .addSnapshotListener { value, _ ->
-                val messages = value?.documents?.mapNotNull { document ->
-                    document.getString("message_content")
+                val messages = value?.mapNotNull { document ->
+                    document["message_content"]?.let { messageContent ->
+                        MessageEntity(
+                            id = 0,
+                            post_user_name = document["post_user_name"].toString(),
+                            message_content = messageContent.toString(),
+                            created_at = document["created_at"].toString().toLong(),
+                            room_id = 0
+                        )
+                    } ?: emptyList<MessageEntity>()[0]
                 } ?: emptyList()
                 callback(messages)
             }

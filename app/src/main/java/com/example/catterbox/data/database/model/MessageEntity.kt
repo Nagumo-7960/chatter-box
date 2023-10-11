@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class MessageEntity(
     @PrimaryKey(autoGenerate = true)
     val id:Int = 0,
-    val post_user_id: String,
+    val post_user_name: String,
     val message_content:String,
     val created_at:Long,
     val room_id:Int

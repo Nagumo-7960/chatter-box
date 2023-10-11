@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.catterbox.ChatApplication
 import com.example.catterbox.data.database.ChatDatabase
+import com.example.catterbox.data.database.model.MessageEntity
 import com.example.catterbox.presentation.screen.ui.theme.CatterBoxTheme
 
 @Composable
@@ -55,7 +56,7 @@ fun ChatRoomScreen(
 @Composable
 fun ChatRoomContent(
     toHome: () -> Unit,
-    allMessages: List<String>,
+    allMessages: List<MessageEntity>,
     text: String = "",
     onValueChange: (String) -> Unit,
     onImeAction: () -> Unit
@@ -91,15 +92,21 @@ fun ChatRoomContent(
                 state = scrollState
             ) {
                 items(allMessages) { message ->
-                    Text(
-                        text = message,
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFF9BFF9F),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(8.dp)
-                    )
+                    Row {
+                        Text(
+                            text = message.post_user_name,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp)
+                        )
+                        Text(
+                            text = message.message_content,
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFF9BFF9F),
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .padding(8.dp)
+                        )
+                    }
                 }
             }
         }
@@ -165,7 +172,7 @@ fun PreviewChatRoomScreen() {
     CatterBoxTheme {
         ChatRoomContent(
             toHome = { navController.navigate("home") },
-            allMessages = listOf("こんにちはー", "どもどもー", "今朝の話なんだけど、突然のことでねー。"),
+            allMessages = listOf(),
             text = "気づいたら猫になってたんだー",
             onValueChange = {},
             onImeAction = {}

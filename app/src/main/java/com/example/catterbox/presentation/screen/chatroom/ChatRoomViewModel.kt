@@ -3,8 +3,6 @@ package com.example.catterbox.presentation.screen.chatroom
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catterbox.ChatApplication
-import com.example.catterbox.data.database.dao.MessageDAO
 import com.example.catterbox.data.database.dao.UserDAO
 import com.example.catterbox.data.database.model.MessageEntity
 import com.example.catterbox.data.database.model.UserEntity
@@ -21,8 +19,8 @@ class ChatRoomViewModel @Inject constructor(
 ): ViewModel() {
     private val _user = MutableStateFlow<List<UserEntity>>(emptyList())
     val user: StateFlow<List<UserEntity>> = _user
-    private val _messageList = MutableStateFlow<List<String>>(emptyList())
-    val messageList: StateFlow<List<String>> = _messageList
+    private val _messageList = MutableStateFlow<List<MessageEntity>>(emptyList())
+    val messageList: StateFlow<List<MessageEntity>> = _messageList
 
     init {
         // Update _allNotes with the latest data from the database
@@ -37,7 +35,7 @@ class ChatRoomViewModel @Inject constructor(
     fun sendMessage(messageContent: String, context: Context) {
         val message = MessageEntity(
             id = 0,
-            post_user_id = user.value.first().id,
+            post_user_name = user.value.first().name,
             message_content = messageContent,
             created_at = System.currentTimeMillis(),
             room_id = 0
@@ -46,7 +44,7 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     fun fetchMessages() {
-        FireStoreHelper().fetchMessagesFromFirestore { messages ->
+        FireStoreHelper().fetchMessageEntityFromFirestore { messages ->
             _messageList.value = messages
         }
     }

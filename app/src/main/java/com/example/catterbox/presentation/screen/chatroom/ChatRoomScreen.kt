@@ -164,7 +164,7 @@ fun ChatMessageSection(
 
         Spacer(modifier = Modifier.padding(8.dp))
 
-        Box {
+        Box (modifier = Modifier.padding(end = 8.dp)){
             Box(modifier = Modifier.offset(x = -12.dp, y = 8.dp)){
                 BalloonComponent()
             }

@@ -27,6 +27,7 @@ class FireStoreHelper {
     fun fetchMessageEntityFromFirestore(callback: (List<MessageEntity>) -> Unit) {
         firestore.collection("messages")
             .orderBy("created_at", Query.Direction.ASCENDING)
+            .limitToLast(40)
             .addSnapshotListener { value, _ ->
                 val messages = value?.mapNotNull { document ->
                     document["message_content"]?.let { messageContent ->
